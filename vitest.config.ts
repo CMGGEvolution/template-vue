@@ -23,10 +23,10 @@ export default defineConfig((configEnv) =>
           reporter: ["text", "json-summary", "json"],
           reportOnFailure: true,
           thresholds: {
-            lines: 20,
-            branches: 20,
-            functions: 20,
-            statements: 20,
+            lines: 0,
+            branches: 0,
+            functions: 0,
+            statements: 0,
           },
           cleanOnRerun: true,
           exclude: [

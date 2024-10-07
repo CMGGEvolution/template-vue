@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 # build app for production with minification
 
-# When we use the services
+# uncomment this when you want to generate the service
 #RUN npm run generate
 RUN npm run build
 EXPOSE 8080
