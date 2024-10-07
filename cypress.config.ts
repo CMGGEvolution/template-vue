@@ -1,0 +1,9 @@
+import { defineConfig } from "cypress";
+
+export default defineConfig({
+  projectId: "brgukf", // replace this with your project Id
+  e2e: {
+    specPattern: "cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}",
+    baseUrl: "http://localhost:4173"
+  }
+});

@@ -1,0 +1,149 @@
+name: Build and test code on differents devices
+run-name: Continuous integration
+
+on:
+  pull_request:
+    branches: ["develop"]
+
+jobs:
+  test-build:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        version: [18]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+      - run: node -v
+
+      - name: Dependencies vulnerabilities
+        run: npm audit
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Linter checker
+        run: npm run lint
+
+      # When we have API
+      #   - name: Generate API services
+      #     run: npm run generate
+
+      - name: Unit tests
+        run: npn test:unit:coverage
+
+      - name: Report Coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-path: "./coverage/coverage-summary.json"
+          json-final-path: "./coverage/coverage-final.json"
+
+      - name: Cypress install
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+      - run: npm run build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          if-no-files-found: error
+          path: dist
+
+  ui-desktop-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: test-build
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Node info
+        run: |
+          node -v
+          npm ci && npm run generate
+
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/laptop/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+
+  ui-mobile-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: test-build
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Node info
+        run: |
+          node -v
+          npm ci && npm run generate
+
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=375,viewportHeight=667"
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/laptop/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
