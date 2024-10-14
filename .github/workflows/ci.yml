@@ -1,12 +1,16 @@
 name: Build and test code on differents devices
-run-name: Continuous integration
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
     branches: ["develop"]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
 
 jobs:
-  test-build:
+  build:
     runs-on: ubuntu-20.04
     permissions:
       contents: read
@@ -37,7 +41,7 @@ jobs:
       #     run: npm run generate
 
       - name: Unit tests
-        run: npn test:unit:coverage
+        run: npm run test:unit:coverage
 
       - name: Report Coverage
         if: always()
@@ -59,10 +63,48 @@ jobs:
           if-no-files-found: error
           path: dist
 
+  vulnerabilities-check:
+    runs-on: ubuntu-20.04
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: Node version
+        run: node -v
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm run test:unit:coverage
+
+      - name: Files
+        run: ls
+
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarqube-scan-action@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          ORGANIZATION: ${{ secrets.ORGANIZATION }}
+          PROJECT_KEY: ${{ secrets.PROJECT_KEY }}
+          SONAR_HOST_URL: https://sonarcloud.io/
+        with:
+          args: -Dsonar.organization=${{ secrets.ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
+            -Dsonar.test.exclusions=**/node_modules/**,**/dist/**,**/src/main.ts,**/cypress/**
+            -Dsonar.typescript.reportPaths=coverage/coverage-summary.json
+
   ui-desktop-tests:
     timeout-minutes: 15
     runs-on: ubuntu-20.04
-    needs: test-build
+    needs: [build, vulnerabilities-check]
     strategy:
       fail-fast: false
       matrix:
@@ -81,17 +123,18 @@ jobs:
       - name: Node info
         run: |
           node -v
-          npm ci && npm run generate
+          npm ci
 
       - name: UI Test for chrome
         uses: cypress-io/github-action@v6
         with:
+          config: "viewportWidth=1281" # can be remove if already set on the test cases
           start: npx vite dev --port 4173
           wait-on: "http://localhost:4173"
           wait-on-timeout: 180
           record: true
           config-file: cypress.config.ts
-          spec: cypress/e2e/laptop/**/*.cy.ts
+          spec: cypress/e2e/desktop/**/*.cy.ts
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -106,7 +149,7 @@ jobs:
   ui-mobile-tests:
     timeout-minutes: 15
     runs-on: ubuntu-20.04
-    needs: test-build
+    needs: [build, vulnerabilities-check]
     strategy:
       fail-fast: false
       matrix:
@@ -125,12 +168,102 @@ jobs:
       - name: Node info
         run: |
           node -v
-          npm ci && npm run generate
+          npm ci
 
       - name: UI Test for chrome
         uses: cypress-io/github-action@v6
         with:
-          config: "viewportWidth=375,viewportHeight=667"
+          config: "viewportWidth=320" # can be remove if already set on the test cases
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/mobile/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+
+  ui-tablet-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: [build, vulnerabilities-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Node info
+        run: |
+          node -v
+          npm ci
+
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=641" # can be remove if already set on the test cases
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/tablet/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+
+  ui-laptop-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: [build, vulnerabilities-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Node info
+        run: |
+          node -v
+          npm ci
+
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=1025" # can be remove if already set on the test cases
           start: npx vite dev --port 4173
           wait-on: "http://localhost:4173"
           wait-on-timeout: 180
