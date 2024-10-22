@@ -1,282 +1,282 @@
-# name: Build and test code on differents devices
+name: Build and test code on differents devices
 
-# on:
-#   pull_request:
-#     types: [opened, synchronize, reopened]
-#     branches: ["develop"]
-#   workflow_dispatch:
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: ["develop"]
+  workflow_dispatch:
 
-# permissions:
-#   pull-requests: read
+permissions:
+  pull-requests: read
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-20.04
-#     permissions:
-#       contents: read
-#       pull-requests: write
-#     strategy:
-#       matrix:
-#         version: [18]
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        version: [18]
 
-#     steps:
-#       - uses: actions/checkout@v4
-#       - name: Use Node.js ${{ matrix.version }}
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: ${{ matrix.version }}
-#       - run: node -v
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+      - run: node -v
 
-#       - name: Dependencies vulnerabilities
-#         run: npm audit
+      - name: Dependencies vulnerabilities
+        run: npm audit
 
-#       - name: Install Dependencies
-#         run: npm ci
+      - name: Install Dependencies
+        run: npm ci
 
-#       - name: Linter checker
-#         run: npm run lint
+      - name: Linter checker
+        run: npm run lint
 
-#       # When we have API
-#       #   - name: Generate API services
-#       #     run: npm run generate
+      # When we have API
+      #   - name: Generate API services
+      #     run: npm run generate
 
-#       - name: Unit tests
-#         run: npm run test:unit:coverage
+      - name: Unit tests
+        run: npm run test:unit:coverage
 
-#       - name: Report Coverage
-#         if: always()
-#         uses: davelosert/vitest-coverage-report-action@v2
-#         with:
-#           json-summary-path: "./coverage/coverage-summary.json"
-#           json-final-path: "./coverage/coverage-final.json"
+      - name: Report Coverage
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-path: "./coverage/coverage-summary.json"
+          json-final-path: "./coverage/coverage-final.json"
 
-#       - name: Cypress install
-#         uses: cypress-io/github-action@v6
-#         with:
-#           runTests: false
-#       - run: npm run build
+      - name: Cypress install
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+      - run: npm run build
 
-#       - name: Save build folder
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: dist
-#           if-no-files-found: error
-#           path: dist
+      - name: Save build folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          if-no-files-found: error
+          path: dist
 
-#   vulnerabilities-check:
-#     runs-on: ubuntu-20.04
-#     needs: build
+  vulnerabilities-check:
+    runs-on: ubuntu-20.04
+    needs: build
 
-#     steps:
-#       - uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-#       - name: Use Node.js
-#         uses: actions/setup-node@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
 
-#       - name: Node version
-#         run: node -v
+      - name: Node version
+        run: node -v
 
-#       - name: Install Dependencies
-#         run: npm ci
+      - name: Install Dependencies
+        run: npm ci
 
-#       - name: Unit tests
-#         run: npm run test:unit:coverage
+      - name: Unit tests
+        run: npm run test:unit:coverage
 
-#       - name: Files
-#         run: ls
+      - name: Files
+        run: ls
 
-#       - name: Analyze with SonarCloud
-#         uses: sonarsource/sonarqube-scan-action@v2.2.0
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#           ORGANIZATION: ${{ secrets.ORGANIZATION }}
-#           PROJECT_KEY: ${{ secrets.PROJECT_KEY }}
-#           SONAR_HOST_URL: https://sonarcloud.io/
-#         with:
-#           args: -Dsonar.organization=${{ secrets.ORGANIZATION }}
-#             -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
-#             -Dsonar.test.exclusions=**/node_modules/**,**/dist/**,**/src/main.ts,**/cypress/**
-#             -Dsonar.typescript.reportPaths=coverage/coverage-summary.json
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarqube-scan-action@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          ORGANIZATION: ${{ secrets.ORGANIZATION }}
+          PROJECT_KEY: ${{ secrets.PROJECT_KEY }}
+          SONAR_HOST_URL: https://sonarcloud.io/
+        with:
+          args: -Dsonar.organization=${{ secrets.ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
+            -Dsonar.test.exclusions=**/node_modules/**,**/dist/**,**/src/main.ts,**/cypress/**
+            -Dsonar.typescript.reportPaths=coverage/coverage-summary.json
 
-#   ui-desktop-tests:
-#     timeout-minutes: 15
-#     runs-on: ubuntu-20.04
-#     needs: [build, vulnerabilities-check]
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         browser: [chrome, edge, firefox]
+  ui-desktop-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: [build, vulnerabilities-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Download the build folder
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: dist
-#           path: dist
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
-#       - name: Node info
-#         run: |
-#           node -v
-#           npm ci
+      - name: Node info
+        run: |
+          node -v
+          npm ci
 
-#       - name: UI Test for chrome
-#         uses: cypress-io/github-action@v6
-#         with:
-#           config: "viewportWidth=1281" # can be remove if already set on the test cases
-#           start: npx vite dev --port 4173
-#           wait-on: "http://localhost:4173"
-#           wait-on-timeout: 180
-#           record: true
-#           config-file: cypress.config.ts
-#           spec: cypress/e2e/desktop/**/*.cy.ts
-#         env:
-#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-#           DEBUG: "cypress:server:args"
-#       - name: Print Cypress Cloud URL
-#         if: always()
-#         run: |
-#           echo Cypress finished with: ${{ steps.cypress.outcome }}
-#           echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=1281" # can be remove if already set on the test cases
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/desktop/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
 
-#   ui-mobile-tests:
-#     timeout-minutes: 15
-#     runs-on: ubuntu-20.04
-#     needs: [build, vulnerabilities-check]
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         browser: [chrome, edge, firefox]
+  ui-mobile-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: [build, vulnerabilities-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Download the build folder
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: dist
-#           path: dist
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
-#       - name: Node info
-#         run: |
-#           node -v
-#           npm ci
+      - name: Node info
+        run: |
+          node -v
+          npm ci
 
-#       - name: UI Test for chrome
-#         uses: cypress-io/github-action@v6
-#         with:
-#           config: "viewportWidth=320" # can be remove if already set on the test cases
-#           start: npx vite dev --port 4173
-#           wait-on: "http://localhost:4173"
-#           wait-on-timeout: 180
-#           record: true
-#           config-file: cypress.config.ts
-#           spec: cypress/e2e/mobile/**/*.cy.ts
-#         env:
-#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-#           DEBUG: "cypress:server:args"
-#       - name: Print Cypress Cloud URL
-#         if: always()
-#         run: |
-#           echo Cypress finished with: ${{ steps.cypress.outcome }}
-#           echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=320" # can be remove if already set on the test cases
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/mobile/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
 
-#   ui-tablet-tests:
-#     timeout-minutes: 15
-#     runs-on: ubuntu-20.04
-#     needs: [build, vulnerabilities-check]
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         browser: [chrome, edge, firefox]
+  ui-tablet-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: [build, vulnerabilities-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Download the build folder
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: dist
-#           path: dist
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
-#       - name: Node info
-#         run: |
-#           node -v
-#           npm ci
+      - name: Node info
+        run: |
+          node -v
+          npm ci
 
-#       - name: UI Test for chrome
-#         uses: cypress-io/github-action@v6
-#         with:
-#           config: "viewportWidth=641" # can be remove if already set on the test cases
-#           start: npx vite dev --port 4173
-#           wait-on: "http://localhost:4173"
-#           wait-on-timeout: 180
-#           record: true
-#           config-file: cypress.config.ts
-#           spec: cypress/e2e/tablet/**/*.cy.ts
-#         env:
-#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-#           DEBUG: "cypress:server:args"
-#       - name: Print Cypress Cloud URL
-#         if: always()
-#         run: |
-#           echo Cypress finished with: ${{ steps.cypress.outcome }}
-#           echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=641" # can be remove if already set on the test cases
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/tablet/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
 
-#   ui-laptop-tests:
-#     timeout-minutes: 15
-#     runs-on: ubuntu-20.04
-#     needs: [build, vulnerabilities-check]
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         browser: [chrome, edge, firefox]
+  ui-laptop-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-20.04
+    needs: [build, vulnerabilities-check]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, edge, firefox]
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Download the build folder
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: dist
-#           path: dist
+      - name: Download the build folder
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
 
-#       - name: Node info
-#         run: |
-#           node -v
-#           npm ci
+      - name: Node info
+        run: |
+          node -v
+          npm ci
 
-#       - name: UI Test for chrome
-#         uses: cypress-io/github-action@v6
-#         with:
-#           config: "viewportWidth=1025" # can be remove if already set on the test cases
-#           start: npx vite dev --port 4173
-#           wait-on: "http://localhost:4173"
-#           wait-on-timeout: 180
-#           record: true
-#           config-file: cypress.config.ts
-#           spec: cypress/e2e/laptop/**/*.cy.ts
-#         env:
-#           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-#           DEBUG: "cypress:server:args"
-#       - name: Print Cypress Cloud URL
-#         if: always()
-#         run: |
-#           echo Cypress finished with: ${{ steps.cypress.outcome }}
-#           echo See results at ${{ steps.cypress.outputs.resultsUrl }}
+      - name: UI Test for chrome
+        uses: cypress-io/github-action@v6
+        with:
+          config: "viewportWidth=1025" # can be remove if already set on the test cases
+          start: npx vite dev --port 4173
+          wait-on: "http://localhost:4173"
+          wait-on-timeout: 180
+          record: true
+          config-file: cypress.config.ts
+          spec: cypress/e2e/laptop/**/*.cy.ts
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          DEBUG: "cypress:server:args"
+      - name: Print Cypress Cloud URL
+        if: always()
+        run: |
+          echo Cypress finished with: ${{ steps.cypress.outcome }}
+          echo See results at ${{ steps.cypress.outputs.resultsUrl }}
