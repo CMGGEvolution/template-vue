@@ -1,0 +1,46 @@
+name: Generate badges
+
+# https://dev.to/thejaredwilcurt/coverage-badge-with-github-actions-finally-59fa
+# Action: https://github.com/schneegans/dynamic-badges-action/tree/v1.0.0/
+
+on:
+  push:
+    branches: [main, staging]
+
+jobs:
+  generate-badges:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+      - name: Intsall dependencies
+        run: npm ci
+
+      - run: npm run test:unit:coverage
+
+      - if: ${{ matrix.version == '18.x' }}
+        name: Get Coverage for badge
+        run: |
+          SUMMARY="$(npm run test:unit:coverage | tail -2 | head -1)"
+          TOKENS=($SUMMARY)
+          echo "COVERAGE=$(echo ${TOKENS[2]})" >> $GITHUB_ENV
+
+      - if: ${{ matrix.version == '18.x' }}
+        name: Create the Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 4eb7afd82efc633d830c54f4a3d26456
+          filename: template-vue.json
+          label: Coverage
+          message: ${{ env.COVERAGE }}
+          color: green
+          namedLogo: vitest
