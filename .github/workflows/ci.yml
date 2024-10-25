@@ -2,12 +2,10 @@ name: Build and test code on differents devices
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches: ["develop"]
+    branches: [develop]
+  push:
+    branches: [develop]
   workflow_dispatch:
-
-permissions:
-  pull-requests: read
 
 jobs:
   build:
@@ -15,9 +13,10 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+
     strategy:
       matrix:
-        version: [18.x]
+        version: [18.x, 20.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -36,15 +35,11 @@ jobs:
       - name: Linter checker
         run: npm run lint
 
-      # When we have API
-      #   - name: Generate API services
-      #     run: npm run generate
-
       - name: Unit tests
         run: npm run test:unit:coverage
 
       - name: Report Coverage
-        if: always()
+        if: matrix.version == '20.x'
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-path: "./coverage/coverage-summary.json"
@@ -53,11 +48,13 @@ jobs:
       - name: Cypress install
         uses: cypress-io/github-action@v6
         with:
+          # Disable running of tests within build job
           runTests: false
       - run: npm run build
 
       - name: Save build folder
         uses: actions/upload-artifact@v4
+        if: matrix.version == '20.x'
         with:
           name: dist
           if-no-files-found: error
@@ -84,13 +81,12 @@ jobs:
       - name: Unit tests
         run: npm run test:unit:coverage
 
-      - name: Files
-        run: ls
+      - name: File
+        run: ls && cd coverage && ls
 
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarqube-scan-action@v2.2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           ORGANIZATION: ${{ secrets.ORGANIZATION }}
           PROJECT_KEY: ${{ secrets.PROJECT_KEY }}
@@ -99,13 +95,14 @@ jobs:
           args: -Dsonar.organization=${{ secrets.ORGANIZATION }}
             -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
             -Dsonar.test.exclusions=**/node_modules/**,**/dist/**,**/src/main.ts,**/cypress/**
-            -Dsonar.typescript.reportPaths=coverage/coverage-summary.json
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
 
   ui-desktop-tests:
     timeout-minutes: 15
     runs-on: ubuntu-20.04
     needs: [build, vulnerabilities-check]
     strategy:
+      # don't fail the entire matrix on failure
       fail-fast: false
       matrix:
         browser: [chrome, edge, firefox]
@@ -114,23 +111,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Node info and installation
+        run: |
+          node -v
+          npm ci
+
       - name: Download the build folder
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
 
-      - name: Node info
-        run: |
-          node -v
-          npm ci
-
       - name: UI Test for chrome
         uses: cypress-io/github-action@v6
         with:
           config: "viewportWidth=1281" # can be remove if already set on the test cases
-          start: npx vite dev --port 4173
-          wait-on: "http://localhost:4173"
+          start: npm run preview
+          wait-on: "http://localhost:4173/"
           wait-on-timeout: 180
           record: true
           config-file: cypress.config.ts
@@ -139,6 +136,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
           DEBUG: "cypress:server:args"
       - name: Print Cypress Cloud URL
         if: always()
@@ -159,22 +157,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Node info
+        run: |
+          node -v
+          npm ci
+
       - name: Download the build folder
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
 
-      - name: Node info
-        run: |
-          node -v
-          npm ci
-
       - name: UI Test for chrome
         uses: cypress-io/github-action@v6
         with:
           config: "viewportWidth=320" # can be remove if already set on the test cases
-          start: npx vite dev --port 4173
+          start: npm run preview
           wait-on: "http://localhost:4173"
           wait-on-timeout: 180
           record: true
@@ -184,6 +182,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
           DEBUG: "cypress:server:args"
       - name: Print Cypress Cloud URL
         if: always()
@@ -204,22 +203,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Node info
+        run: |
+          node -v
+          npm ci
+
       - name: Download the build folder
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
 
-      - name: Node info
-        run: |
-          node -v
-          npm ci
-
       - name: UI Test for chrome
         uses: cypress-io/github-action@v6
         with:
           config: "viewportWidth=641" # can be remove if already set on the test cases
-          start: npx vite dev --port 4173
+          start: npm run preview
           wait-on: "http://localhost:4173"
           wait-on-timeout: 180
           record: true
@@ -229,6 +228,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
           DEBUG: "cypress:server:args"
       - name: Print Cypress Cloud URL
         if: always()
@@ -249,22 +249,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Node info
+        run: |
+          node -v
+          npm ci
+
       - name: Download the build folder
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
 
-      - name: Node info
-        run: |
-          node -v
-          npm ci
-
       - name: UI Test for chrome
         uses: cypress-io/github-action@v6
         with:
           config: "viewportWidth=1025" # can be remove if already set on the test cases
-          start: npx vite dev --port 4173
+          start: npm run preview
           wait-on: "http://localhost:4173"
           wait-on-timeout: 180
           record: true
@@ -274,6 +274,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          COMMIT_INFO_SHA: ${{ github.event.pull_request.head.sha }}
           DEBUG: "cypress:server:args"
       - name: Print Cypress Cloud URL
         if: always()
