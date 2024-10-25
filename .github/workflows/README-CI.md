@@ -101,7 +101,10 @@ You need to change the `Analysis Method` to avoid some error. You can have acces
 
 For more you can see the doc on the action documentation and also [this](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/github-actions-for-sonarcloud/).
 
-## UI test (End to end test on different devices)
+### UI test (End to end test on different devices)
+
+> [!NOTE]
+> You cannot have the cypress badge if you don't have a cypress cloud account
 
 These job are about the End-to-End test wrote for your project. This will run only after the `Build and Vulnerability check` as configured on the `needs` property.
 
@@ -128,5 +131,7 @@ Environment variable
 - `DEBUG`: this is a command gave by cypress to see what happen during the process to help debugging when we have error
 
 The last step is to `Print Cypress Cloud URL` to directly have access to your account (Provide this if you have created an account on cypress cloud)
+
+NB: To add the cypress badge, go to your project in your cypress cloud account. click to `project settings`; Under the general menu scroll down till title `README Badges`; click on the button`Configure Badge`; Fill the form branch inside the form display (I choose `develop` in my case), choose `style, type` and copy the markdown and pase it to your readme file.
 
 This will be the same for all the `ui test`.
