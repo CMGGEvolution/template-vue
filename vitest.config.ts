@@ -20,7 +20,7 @@ export default defineConfig((configEnv) =>
         ],
         coverage: {
           provider: "v8",
-          reporter: ["text", "json-summary", "json"],
+          reporter: ["text", "json-summary", "json", "lcovonly"],
           reportOnFailure: true,
           thresholds: {
             lines: 0,
