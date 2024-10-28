@@ -24,17 +24,15 @@ jobs:
       - name: Intsall dependencies
         run: npm ci
 
-      - run: npm run test:unit:coverage
-
-      - if: ${{ matrix.version == '18.x' }}
-        name: Get Coverage for badge
+      - name: Get Coverage for badge
         run: |
-          SUMMARY="$(npm run test:unit:coverage | tail -2 | head -1)"
-          TOKENS=($SUMMARY)
-          echo "COVERAGE=$(echo ${TOKENS[2]})" >> $GITHUB_ENV
+          "$(npm run test:unit:coverage)"
+          cd coverage && ls
+          SUMMARY=$(jq '.total.lines.pct' coverage-summary.json)
+          SUMMARY_PERCENTAGE="${SUMMARY}%"
+          echo "COVERAGE=$(echo ${SUMMARY_PERCENTAGE})" >> $GITHUB_ENV
 
-      - if: ${{ matrix.version == '18.x' }}
-        name: Create the Badge
+      - name: Create the Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_SECRET }}

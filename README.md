@@ -7,3 +7,4 @@
 ## Workflows
 
 - [Continuous integration](.github/workflows/README-CI.md)
+- [Generate coverage](.github/workflows/README-GC.md)
