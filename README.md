@@ -16,3 +16,4 @@ Here are the documentation about each workflow:
 - [Continuous integration](.github/workflows/README-CI.md)
 - [Generate coverage](.github/workflows/README-GC.md)
 - [Continuous deployment](.github/workflows/README-DEPLOY.md)
+- [Release](.github/workflows/README-RELEASE.md)
