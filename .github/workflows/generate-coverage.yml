@@ -26,7 +26,7 @@ jobs:
 
       - name: Get Coverage for badge
         run: |
-          "$(npm run test:unit:coverage)"
+          npm run test:unit:coverage
           cd coverage && ls
           SUMMARY=$(jq '.total.lines.pct' coverage-summary.json)
           SUMMARY_PERCENTAGE="${SUMMARY}%"
