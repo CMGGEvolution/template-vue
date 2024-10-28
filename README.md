@@ -6,5 +6,13 @@
 
 ## Workflows
 
+### Prerequisites
+
+Basic knowledge about yaml file and workflow using GitHub Action _[Help](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions)_.
+For the rest i will provide a link for each subject which could be useful for your own understanding throughout the explanation.
+
+Here are the documentation about each workflow:
+
 - [Continuous integration](.github/workflows/README-CI.md)
 - [Generate coverage](.github/workflows/README-GC.md)
+- [Continuous deployment](.github/workflows/README-DEPLOY.md)

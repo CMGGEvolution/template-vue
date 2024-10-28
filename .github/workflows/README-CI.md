@@ -16,12 +16,6 @@ Consequently, the CI approach enables software development teams to catch and fi
 
 [More about](https://www.ibm.com/topics/continuous-integration)
 
-## Prerequisites
-
-1. Basic knowledge about yaml file and workflow using GitHub Action _[Help](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions)_
-
-For the rest i will provide a link for each subject which could be useful for your own understanding throughout the explanation.
-
 ## How does it work here ?
 
 `name` is used to name your workflow and will be the one display under your `Actions` tab. There is also `run-name` which is the name for workflow runs generated from the workflow. In our case i decided to choose `name` instead as it will help me identify on the list of workflows a specific one according to the pull request message. Contrary to `run-name` which will always display the same message no matter what.
