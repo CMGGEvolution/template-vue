@@ -1,4 +1,4 @@
-name: Deploy App on production eveironment
+name: Deployment on production evironment
 
 on:
   push:
@@ -6,12 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-## References with more details:
-# 1. https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions
-# 2. https://chmodcommand.com/chmod-600/
-# 3. https://linuxhandbook.com/install-command/#3-create-a-directory-using-the-install-command
-# 4. https://linuxhandbook.com/echo-command/#7-use-echo-command-to-empty-a-file-in-linux
-# 5. http://man.he.net/man1/ssh-keyscan
 jobs:
   deploy:
     runs-on: ubuntu-20.04
@@ -22,7 +16,9 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+
       - name: connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout main && git pull && npm run build && service apache2 restart && exit" #when you use apache
+
       - name: cleanup
         run: rm -rf ~/.ssh
