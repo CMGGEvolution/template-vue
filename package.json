@@ -20,11 +20,14 @@
     "pre-commit": "npm audit || lint-staged",
     "pre-push": "npm run build && npm run test:unit:ci && npm run remove-build",
     "format": "prettier --write src/",
-    "husky": "husky"
+    "husky": "husky",
+    "generate-user": "openapi -i ./specs/user.yaml -o ./src/services/apis/user --useOptions -c axios --useUnionTypes",
+    "generate": "npm run generate-user"
   },
   "dependencies": {
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
+    "vue-i18n": "^10.0.4",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
@@ -49,6 +52,7 @@
     "jsdom": "^24.1.0",
     "lint-staged": "^15.2.10",
     "npm-run-all2": "^6.2.0",
+    "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",
     "prettier": "^3.2.5",
