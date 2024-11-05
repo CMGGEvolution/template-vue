@@ -1,4 +1,4 @@
-name: Build and test code on differents devices
+name: Build and test code on different devices
 
 on:
   pull_request:
@@ -34,6 +34,9 @@ jobs:
 
       - name: Linter checker
         run: npm run lint
+
+      - name: Generate services
+        run: npm run generate
 
       - name: Unit tests
         run: npm run test:unit:coverage
@@ -77,6 +80,9 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Generate services
+        run: npm run generate
 
       - name: Unit tests
         run: npm run test:unit:coverage
