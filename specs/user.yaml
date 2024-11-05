@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: USER Rest API
+  description: REST API endpoints for managing the user's related resources
+  version: 0.0.1
+servers:
+  - url: "https"
+  - url: "http"
+paths:
+  /user:
+    get:
+      tags:
+        - User
+      summary: Fetch all the users
+      description: Fetch all the users
+      operationId: fetchUsers
+      security:
+        - oAuth:
+            - user:read:all
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserDTO"
+components:
+  securitySchemes:
+    oAuth:
+      type: oauth2
+      description: This API uses OAuth 2 with the Authorization Code grant flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.oauth.lao-sarl.cm
+          tokenUrl: https://token.oauth.lao-sarl.cm
+          scopes:
+            question:read: Read Question
+            question:edit: Edit Question
+            quiz:read: Read Quiz
+            quiz:edit: Edit quiz
+
+  schemas:
+    UserDTO:
+      type: object
+      required:
+        - id
+        - firstname
+        - lastName
+        - email
+        - status
+        - roles
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: identifier
+        firstname:
+          type: string
+          description: the user firstname
+        lastName:
+          type: string
+          description: the user lastName
+        email:
+          type: string
+          description: the user email
+        status:
+          $ref: "#/components/schemas/UserStatusDTO"
+        roles:
+          type: array
+          description: the user roles
+          items:
+            $ref: "#/components/schemas/RoleDTO"
+    UserStatusDTO:
+      type: string
+      enum:
+        - ENABLED
+        - DISABLED
+        - SUSPENDED
+    RoleDTO:
+      type: string
+      enum:
+        - CLIENT
+        - ADMIN
+        - SUPER_ADMIN
+        - REVISER

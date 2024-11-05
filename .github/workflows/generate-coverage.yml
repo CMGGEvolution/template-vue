@@ -24,6 +24,9 @@ jobs:
       - name: Intsall dependencies
         run: npm ci
 
+      - name: Genrate services
+        run: npm run genrate
+
       - name: Get Coverage for badge
         run: |
           npm run test:unit:coverage
