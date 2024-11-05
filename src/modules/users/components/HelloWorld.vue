@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import i18nMessages from  "@/modules/users/i18n.json";
+
 defineProps<{
   msg: string;
 }>();
+const { t } = useI18n({
+  inheritLocale: true, // to inherit the root translation
+  messages: i18nMessages,
+});
 </script>
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="green">{{ msg }}:  <strong><mark>{{ t("title") }}</mark></strong></h1>
     <h3>
-      You’ve successfully created a project with
+      You’ve successfully created a project with <mark>{{ t("hello") }}</mark>
       <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
       What's next?

@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-npm run pre-push
+npm run generate && npm run pre-push
