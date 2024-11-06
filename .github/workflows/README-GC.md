@@ -1,4 +1,4 @@
-# Generate coverage documentation ([file](./generate-coverage.yml))
+# Generate coverage documentation ([Link to workflow file](./generate-coverage.yml))
 
 GitHub readme badges provide a quick and visual way to convey vital information about your project, enhancing its credibility and readability.
 Readme badges make GitHub projects easier to notice and trust for a few reasons:
@@ -8,7 +8,7 @@ Readme badges make GitHub projects easier to notice and trust for a few reasons:
 - Social proof - Badges from third-party services show that the project follows professional standards. This makes people more confident in the project's quality.
 - Professional appearance - When badges are used well, they make the project look neat and welcoming. This can attract more contributors and leave a good first impression.
 
-In short, readme badges help projects stand out by making them look well-kept and easy to understand. This encourages more people to take a look and possibly contribute. If you want to know more, take a look at this [article](https://daily.dev/blog/readme-badges-github-best-practices)
+In short, readme badges help projects stand out by making them look well-kept and easy to understand. This encourages more people to take a look and possibly contribute. If you want to know more, take a look at this [readme-badges-github-best-practices](https://daily.dev/blog/readme-badges-github-best-practices)
 
 ## Description
 
@@ -49,6 +49,6 @@ To go deeper and customize more,you can visit the actions _**[schneegans/dynamic
 
 ## References
 
-- [Article](https://dev.to/thejaredwilcurt/coverage-badge-with-github-actions-finally-59fa)
+- [coverage-badge-with-github-actions-finally-59fa](https://dev.to/thejaredwilcurt/coverage-badge-with-github-actions-finally-59fa)
 - [jq command](https://www.baeldung.com/linux/jq-command-json)
-- [actions](https://github.com/schneegans/dynamic-badges-action/tree/v1.7.0/)
+- [dynamic-badges-action](https://github.com/schneegans/dynamic-badges-action/tree/v1.7.0/)

@@ -1,4 +1,4 @@
-# Continuous deployment documentation (CD) ([file](./deploy.yml))
+# Continuous deployment documentation (CD) ([Link to workflow file](./deploy.yml))
 
 ## About CD
 
@@ -10,7 +10,7 @@ Continuous deployment offers several benefits for enterprises looking to scale t
 
 In order to achieve this, regression tests must be automated, thereby eliminating expensive manual regression testing. The systems that organizations put in place to manage large bundles of production change—including release planning and approval meetings—can also be eliminated for most changes.
 
-[More about](https://www.ibm.com/topics/continuous-deployment)
+[More about continuous deployment](https://www.ibm.com/topics/continuous-deployment)
 
 ## Description
 
@@ -22,7 +22,7 @@ In order to achieve this, regression tests must be automated, thereby eliminatin
 
 The deployment is made when new changes are pushed to the `main` branch. The runner used is `ubuntu-20.04` and the node version is `18.x`.
 
-To avoid repetition, because all is already well explained in the article in the reference. I also added some more articles i used for each command to deepen the understanding. [Here is the article](https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions)
+To avoid repetition, because all is already well explained in the article in the reference. I also added some more articles i used for each command to deepen the understanding. [how-to-deploy-a-git-repository-to-a-server-using-github-actions](https://www.programonaut.com/how-to-deploy-a-git-repository-to-a-server-using-github-actions)
 
 ### Specificities
 
