@@ -1,4 +1,4 @@
-# Release documentation ([file](./release.yml))
+# Release documentation ([Link to workflow file](./release.yml))
 
 ## About release
 
@@ -8,7 +8,7 @@ In agile software development, a release is a deployable software package culmin
 
 To be successful, software release management requires careful planning and execution, with customer-centric goals, time and budget efficiency, and minimal negative impact on customers.
 
-[More about](https://www.techtarget.com/searchsoftwarequality/definition/release)
+[More about continuous release](https://www.techtarget.com/searchsoftwarequality/definition/release)
 
 ## Description
 
@@ -33,4 +33,4 @@ To be successful, software release management requires careful planning and exec
 
 ### References
 
-- [GitHub example](https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images)
+- [Example of script to publish docker images](https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images)

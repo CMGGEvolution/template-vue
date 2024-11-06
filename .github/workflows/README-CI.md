@@ -1,4 +1,4 @@
-# Continuous integration documentation (CI) ([file](./ci.yml))
+# Continuous integration documentation (CI) ([Link to workflow file](./ci.yml))
 
 ## About CI
 
@@ -6,7 +6,7 @@
 
 CI was created as a response to the challenges of traditional software development, namely the processes associated with integration and deployment. In traditional development, each developer was responsible for manually integrating new code into new iterations of an app or service, making integration a slow, error-prone process, especially for large development teams.
 
-Different pieces of code didn’t always work well together and developers integrated their changes on different timelines and sometimes at the last minute so feedback on integration issues was often delayed. Delays related to inconsistent integrations made it harder for teams to figure out which change introduced the bug, so debugging also became an arduous process.
+Different pieces of code didn’t always work well together and developers integrated their changes on different timelines and sometimes at the last minute so feedback on integration issues was often delayed 🙆🏽‍♂️. Delays related to inconsistent integrations made it harder for teams to figure out which change introduced the bug, so debugging also became an arduous process.
 
 Furthermore, software testing was infrequent, with large batch updates made all at once, so bugs could slip through the cracks and accumulate in the code base, leading to errors and glitches for end users. (And more difficult troubleshooting for developers.)
 
@@ -14,7 +14,7 @@ With a CI system, new code is added to a central repository (typically, multiple
 
 Consequently, the CI approach enables software development teams to catch and fix errors before they affect software performance, resulting in higher-quality software and more predictable delivery schedules.
 
-[More about](https://www.ibm.com/topics/continuous-integration)
+[More about continuous integration](https://www.ibm.com/topics/continuous-integration)
 
 ## How does it work here ?
 
@@ -36,7 +36,7 @@ This job is responsible to check if the build work well as well as if the units 
 
 A job run on a runner more simple on a OS (ubuntu, windows, etc..). As a linux user i chose `ubuntu-20.4` which can be changed of course according to your need.
 
-Also to be sure that my application is compatible with some Nodejs version(define on requirements), i used to run my job using many versions. To run a same script on different configuration, Github Action provide a property name `matrix` [more](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix). This job run on `node js 18.x and 20.x in parallel`.
+Also to be sure that my application is compatible with some Nodejs version(define on requirements), i used to run my job using many versions. To run a same script on different configuration, Github Action provide a property name `matrix` (read about [what is matrix and how to use it](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix)). This job run on `node js 18.x and 20.x in parallel`.
 
 A job contains a sequence of tasks called `steps`. Steps can run commands, run setup tasks, or run an action in your repository, a public repository, or an action published in a Docker registry.
 
@@ -69,9 +69,9 @@ NB: If the units tests do not respect the requirements defined, this will failed
 
 This will run only after the `Build` as configured on the `needs` property.
 
-This job use [sonarCloud](https://www.sonarsource.com/products/sonarcloud/); It provides instant feedback, in the right context, with minimal distractions so Clean Code is delivered every day. It is also a widely used static analysis solution for continuous code quality and security inspection. It helps developers identify and fix issues in their code that could lead to bugs, vulnerabilities, or decreased development velocity. SonarQube supports the most popular programming languages, including Java, JavaScript, TypeScript, C#, Python, C, C++, and many more.
+This job use sonarCloud ([What is sonarCloud?](https://www.sonarsource.com/products/sonarcloud/)); It provides instant feedback, in the right context, with minimal distractions so Clean Code is delivered every day. It is also a widely used static analysis solution for continuous code quality and security inspection. It helps developers identify and fix issues in their code that could lead to bugs, vulnerabilities, or decreased development velocity. SonarQube supports the most popular programming languages, including Java, JavaScript, TypeScript, C#, Python, C, C++, and many more.
 
-First, you will need to connect your Github account to SonarCloud. But in order to do that, you will need to have an organization on GitHub but don't worry you can do that freely using this [Github article](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch). After creating your organization, here is the next step to help you connect it with sonarCloud [Here](https://docs.sonarsource.com/sonarcloud/getting-started/github/)
+First, you will need to connect your Github account to SonarCloud. But in order to do that, you will need to have an organization on GitHub but don't worry you can do that freely using this article [Creating a new organization from scratch](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch). After creating your organization, here is the next step to help you connect it with sonarCloud [SonarCloud | Getting started with SonarCloud | Analyzing GitHub projects](https://docs.sonarsource.com/sonarcloud/getting-started/github/)
 
 Here we will be focused on the the last part.
 
@@ -93,7 +93,7 @@ As we will need to configure more to avoid analyzing unwanted folder and more. F
 
 You need to change the `Analysis Method` to avoid some error. You can have access by going to _**`My projects > choose the organization's project (CMGGEvolution/template-vue in my case) > choose the project (template-vue for me) > on the sidebar hover the menu 'Administration' > you will see on its sub-menus 'Analysis Method' and click on it > Disabled 'Automatic Analysis'`**_
 
-For more you can see the doc on the action documentation and also [this](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/github-actions-for-sonarcloud/).
+For more you can see the doc on the action documentation and also [SonarCloud | Advanced setup | CI-based analysis | Github Actions for SonarCloud](https://docs.sonarsource.com/sonarcloud/advanced-setup/ci-based-analysis/github-actions-for-sonarcloud/).
 
 ### UI test (End to end test on different devices)
 
@@ -108,11 +108,11 @@ To start the integration test, we need to download the `dist` artifact we downlo
 
 The step responsible of running these test is name `UI Test for chrome|firefox|edge`. We will use the actions called _**[cypress-io/github-action@v6](https://github.com/cypress-io/github-action/tree/v6/)**_.
 
-- `config`: Is used fi you want to add some more configurations depending on the job. There are the same as the cypress config file [more](https://github.com/cypress-io/github-action/tree/v6/?tab=readme-ov-file#config). Here i set the `viewportWidth` according to the device. Here is a reference link for device size [device reference](https://www.altamira.ai/blog/common-screen-sizes-for-responsive-web-design/).
+- `config`: Is used fi you want to add some more configurations depending on the job. There are the same as the cypress config file [config parameter in cypress github action](https://github.com/cypress-io/github-action/tree/v6/?tab=readme-ov-file#config). Here i set the `viewportWidth` according to the device. Here is a reference link for device size [common-screen-sizes-for-responsive-web-design](https://www.altamira.ai/blog/common-screen-sizes-for-responsive-web-design/).
 - `start`: to configure the command to start the server cypress will use to run the tests.You can start multiple server processes. For example, if you have an API to start using npm run api and the web server to start using npm run web you can put those commands in start using comma separation. Here we will use the `build` artifact download above and run the `preview` command to start the server
 - `wait-on`: If you are starting a local server and it takes a while to start, you can add a parameter wait-on and pass url to wait for the server to respond.
 - `wait-on-timeout`: By default, wait-on will retry for 60 seconds. You can pass a custom timeout in seconds using `wait-on-timeout`
-- `record`: is used to record your test. But you will need to configure the record key. T have a record key, you need to created a project on cypress cloud [article](https://docs.cypress.io/cloud/get-started/setup). If you don't want to have an account, you can remove it.
+- `record`: is used to record your test. But you will need to configure the record key. T have a record key, you need to created a project on cypress cloud [Getting started with cypress cloud](https://docs.cypress.io/cloud/get-started/setup). If you don't want to have an account, you can remove it.
 - `config-file`: is used to specify the path to the cypress config file in your project
 - `spec`: is used to specify the path to the designated folder that contain our tests files
 
@@ -121,7 +121,7 @@ Environment variable
 - `CYPRESS_RECORD_KEY`: Here is the record key provided by cypress in your project. You might have seen it in the article about to get started with cypress cloud. (Provide this if you have created an account on cypress cloud)
 - `GITHUB_TOKEN`: used to have access to your project by cypress
 - `CYPRESS_PROJECT_ID`: Id of your project present on your cypress cloud account. (Provide this if you have created an account on cypress cloud)
-- `COMMIT_INFO_SHA`: (recommended by cypress) to re-enable Cypress bot PR comments. See [this comment](https://github.com/cypress-io/github-action/issues/124#issuecomment-716584972) for more details.
+- `COMMIT_INFO_SHA`: (recommended by cypress) to re-enable Cypress bot PR comments. See [link to the cypress recommendation](https://github.com/cypress-io/github-action/issues/124#issuecomment-716584972) for more details.
 - `DEBUG`: this is a command gave by cypress to see what happen during the process to help debugging when we have error
 
 The last step is to `Print Cypress Cloud URL` to directly have access to your account (Provide this if you have created an account on cypress cloud)
