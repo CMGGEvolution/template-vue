@@ -100,6 +100,10 @@ Here are the documentation about each workflow:
 - [Continuous deployment](.github/workflows/README-DEPLOY.md)
 - [Release](.github/workflows/README-RELEASE.md)
 
+## Apache server
+
+- [Apache server vonfiguration](./SERVER_CONFIG.md)
+
 ## Other
 
 Want a place to find link toward resources in dev, visit this repos [Dev-and-it-resource](https://github.com/masterivanic/Dev-and-it-ressource).
