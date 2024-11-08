@@ -32,7 +32,7 @@ A workflow run is made up of one or more `jobs`, which run in parallel by defaul
 
 ### Build job
 
-This job is responsible to check if the build work well as well as if the units tests respect the thresholds requirements for the project. And it will also display these requirements on the current pull request in other it will need to write on the pull request. We need to know that in order to write it will need the permissions (` contents: read`, `pull-requests: write`) which are those required to write a threshold summary on the pull request.
+This job is responsible to check if the build work well as well as if the units tests respect the thresholds requirements for the project. And it will also display these requirements on the current pull request in other it will need to write on the pull request. We need to know that in order to write it will need the permissions (`contents: read`, `pull-requests: write`) which are those required to write a threshold summary on the pull request.
 
 A job run on a runner more simple on a OS (ubuntu, windows, etc..). As a linux user i chose `ubuntu-20.4` which can be changed of course according to your need.
 
