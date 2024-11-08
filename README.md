@@ -17,8 +17,8 @@ A complete vue template for a robust project.This includes link to different too
 - [vite](https://vite.dev/)
 - [Cypress](https://www.cypress.io/)
 - [husky](https://www.npmjs.com/package/husky)
-- [Eslint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
+- [eslint-config-epsvue](https://www.npmjs.com/package/eslint-config-epsvue). It combine [Eslint](https://eslint.org/), [Prettier](https://prettier.io/) and [Stylelint](https://www.npmjs.com/package/stylelint) and it is also customizable 😉
+- [lint-staged](https://www.npmjs.com/package/lint-staged)
 
 ## Project structure
 
