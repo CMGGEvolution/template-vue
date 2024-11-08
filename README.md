@@ -2,7 +2,7 @@
 
 A complete vue template for a robust project.This includes link to different tools used.
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=bugs)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/IT-WIBRC/4eb7afd82efc633d830c54f4a3d26456/raw/template-vue.json) [![template-vue](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/frc51p/develop&style=plastic&logo=cypress)](https://cloud.cypress.io/projects/frc51p/runs)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=bugs)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/IT-WIBRC/4eb7afd82efc633d830c54f4a3d26456/raw/template-vue.json) [![template-vue](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/frc51p/develop&style=plastic&logo=cypress)](https://cloud.cypress.io/projects/frc51p/runs)
 
 ## Libraries used
 
@@ -11,14 +11,17 @@ A complete vue template for a robust project.This includes link to different too
 - [vue-router](https://router.vuejs.org/)
 - [Pinia store](https://pinia.vuejs.org/)
 - [vue-i18n](https://vue-i18n.intlify.dev/)
+- [vue-test-utils](https://test-utils.vuejs.org/)
 - [TailwindCss](https://tailwindcss.com/)
 - [openapi-typescript-codegen](https://github.com/ferdikoomen/openapi-typescript-codegen)
 - [vitest](https://vitest.dev/)
 - [vite](https://vite.dev/)
 - [Cypress](https://www.cypress.io/)
 - [husky](https://www.npmjs.com/package/husky)
-- [Eslint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
+- [eslint-config-epsvue](https://www.npmjs.com/package/eslint-config-epsvue). It combine [Eslint](https://eslint.org/), [Prettier](https://prettier.io/) and [Stylelint](https://www.npmjs.com/package/stylelint) and it is also customizable 😉
+- [lint-staged](https://www.npmjs.com/package/lint-staged)
+- [commitizen](https://github.com/commitizen/cz-cli): this is a nice utils for commit template 🤙
+- [vuelidate](https://vuelidate-next.netlify.app/): Vuelidate is a simple, but powerful, lightweight model-based validation for Vue.js 3 and 2.
 
 ## Project structure
 
@@ -99,10 +102,95 @@ Here are the documentation about each workflow:
 - [Generate coverage](.github/workflows/README-GC.md)
 - [Continuous deployment](.github/workflows/README-DEPLOY.md)
 - [Release](.github/workflows/README-RELEASE.md)
+- [commitizen](https://github.com/commitizen/cz-cli)
+
+## Be a commitizen 💆
+
+[Commitizen](https://github.com/commitizen/cz-cli) is a nice utils to setup the commit template for your project. When you commit with Commitizen, you'll be prompted to fill out any required commit fields at commit time. No more waiting until later for a git commit hook to run and reject your commit (though that can still be helpful). No more digging through CONTRIBUTING.md to find what the preferred format is. Get instant feedback on your commit message formatting and be prompted for required fields.
+
+[Husky](https://www.npmjs.com/package/husky) is a tool that allows us to easily wrangle Git hooks and run the scripts we want at those stages.
+
+There are also some alternative to `commitizen` like [commitlint](https://github.com/conventional-changelog/commitlint), etc. It's up to you to choose, remove and customize
+
+## Steps before starting using
+
+### Init a project
+
+There are some few steps you need to follow:
+
+1. You can fork this repository
+2. Make this repository a template. You can see how by reading this [Creating a template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository)
+3. Now you can use this as your template for all your future vue project by referring to this github documentation about [Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+4. Once create, clone this repo on your local machine and install dependencies using `npm ci` command
+5. To make the `husky` file executable, run the following command in your project's root directory:
+
+   ```bash
+   chmod 700 .husky/_/*
+   ```
+
+6. Delete all unnecessary `.md` files in the `.github/workflows`'s folder and also the `SERVER_CONFIG.md` in your root project. Don't forget to model the `README.md` to correspond to your project🤭
+
+7. To make a commit after a work, you can just type `git commit` in your console and `commitizen` will guide you.
+
+8. Congratulation 🎉🥳. Now you can develop your amazing project.💪🏻
+
+### Some precision
+
+There are some files you may not understand why they are presents in the project but don't, here, i will give you a precision about how to use them. Let's start
+
+- `env.d.ts` this file is use for developer experience when developing the project and reduce error when using a environment variable. Interesting 🤭 isn't it? This helps you to have auto completion when dealing with environment variables. To use it, _you will need to declare the variable inside the corresponding file either `.env.development`, `env.staging` or `.env.production` but most of the time, you will declare the same variable on all these files because if it is used in the dev env, it will probably be used in the other one. After the declaration in those files, make the same on the `env.d.ts` file inside the `ImportMetaEnv` interface_. Now when you will need to use this variable just type `import.meta.env.` and you will see the magic completion 🌠. Don't forget to start your env variable name with `VITE_`. Want to know why and also more about environment variable in vite? You can read this article about [Env Variables and Modes](https://vite.dev/guide/env-and-mode)
+
+- There are also the [modes](https://vite.dev/guide/env-and-mode#modes) in vite. To be less talkative, this is like the your different environment `(dev, test or staging and production)`. You can see in the `vite.config.ts` file this config
+
+  ```javascript
+  build: {
+    outDir: mode === "staging" ? "dist-staging" : "dist";
+  }
+  ```
+
+This is there to differentiate the build output of these environments. We will have the `dist-staging` only on the `test or staging environment`. Leant more by reading about [Env Variables and Modes](https://vite.dev/guide/env-and-mode#mode)
+
+- We also created some alias for different section of the project
+
+  ```javascript
+     resolve: {
+           alias: {
+           "@": fileURLToPath(new URL("./src", import.meta.url)),
+           "@core": fileURLToPath(new URL("./src/core", import.meta.url)),
+           "@modules": fileURLToPath(new URL("./src/modules", import.meta.url)),
+           "@utils": fileURLToPath(new URL("./src/utils", import.meta.url)),
+           "@services": fileURLToPath(new URL("./src/services", import.meta.url)),
+           "@assets": fileURLToPath(new URL("./src/assets", import.meta.url))
+        }
+     },
+  ```
+
+This is an advantage for our eyes when importing something from a folder far and also helps use to directly know where the file we are importing come from. You can create you own if you desire. Don't know how? Read this answer on stackOverflow about [How to set multiple aliases in vite](https://stackoverflow.com/questions/75201705/how-to-set-multiple-aliases-in-vite-react#75201776)
+
+- When starting your project, you may want to change the test threshold to a reasonable but efficient one for the project. This is possible, you just need to change this in the `vitest.config.ts` file. Here is an example:
+
+  ```javascript
+     thresholds: {
+        lines: 84,
+         branches: 84,
+         functions: 84,
+         statements: 84,
+     },
+  ```
+
+You can read more about it on this [vitest coverage](https://v0.vitest.dev/config/#coverage).
+
+> [!NOTE]
+> In modern project, we often setup different environments and one of them is the test or staging environment. The advice i can give to you to reduce the cost is to use a free server for frontend test like [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/) just for the test and when everything goes well, deploy it to your own server maybe using the config i provide on the next section. But don't forget that if your frontend use an api, the api url must be set on the frontend side before starting using it. And also your api need to be deployed.
 
 ## Apache server
 
-- [Apache server vonfiguration](./SERVER_CONFIG.md)
+- [Apache server configuration](./SERVER_CONFIG.md)
+
+## Useful packages can helps in your dev journey
+
+- [Dayjs](https://day.js.org/): is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
+- [UUID Generator](https://www.uuidgenerator.net/): this may not be a package, but it is useful when testing.
 
 ## Other
 

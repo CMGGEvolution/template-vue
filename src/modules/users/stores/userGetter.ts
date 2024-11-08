@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { User } from "@services/user/entities/User.entity";
 import { UserService } from "@services/apis/user";
-import type { ApiResponse } from "@core/Errors";
+import { GenericErrors, type ApiResponse } from "@core/Errors";
 
 type State = {
   isLoggedIn: boolean;
@@ -36,10 +36,11 @@ export const useUserGetterStore = defineStore("userGetters", {
           };
         })
         .catch((error) => {
-          console.error(error);
+          const castedError = (error as Error);
           return {
             status: "error",
-            message: (error as Error).message,
+            message: castedError.message 
+              ? castedError.message : GenericErrors.UNKNOWN_ERROR,
           };
         });
     },

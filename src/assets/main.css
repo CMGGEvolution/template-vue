@@ -1,4 +1,4 @@
-@import "./base.css";
+@import url("./base.css");
 
 @tailwind base;
 @tailwind components;
@@ -20,18 +20,18 @@
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: hsla(160deg, 100%, 37%, 1);
   transition: 0.4s;
   padding: 3px;
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: hsla(160deg, 100%, 37%, 0.2);
   }
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
   body {
     display: flex;
     place-items: center;

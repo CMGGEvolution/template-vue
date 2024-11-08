@@ -25,7 +25,8 @@ type ResponseOnSuccess<T> = {
   data: T;
 };
 
-type ApiResponseResult<T, K = keyof T> = ResponseOnError
+type ApiResponseResult<T, K = keyof T> =
+  | ResponseOnError
   | ResponseOnSuccess<T>
   | ResponseErrorOnForm<K>;
 
