@@ -16,10 +16,13 @@
     "build-only": "vite build",
     "build:staging": "npm run type-check && vite build -- --mode staging",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.ts,.cjs --fix --ignore-path .gitignore",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "pre-commit": "npm audit || lint-staged",
     "pre-push": "npm run build && npm run test:unit:ci && npm run remove-build",
-    "format": "prettier --write src/",
+    "stylelint": "stylelint --aei '**/*.{css,vue,scss}'",
+    "stylelint:fix": "npm run stylelint -- --fix",
+    "format": "prettier --write src/ && npm run stylelint",
     "husky": "husky",
     "generate-user": "openapi -i ./specs/user.yaml -o ./src/services/apis/user --useOptions -c axios --useUnionTypes",
     "generate": "npm run generate-user"
@@ -32,22 +35,17 @@
   },
   "devDependencies": {
     "@pinia/testing": "^0.1.6",
-    "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^20.14.5",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitest/coverage-v8": "^2.1.2",
-    "@vue/eslint-config-prettier": "^9.0.0",
-    "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.6",
     "cypress": "^13.12.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-cypress": "^3.3.0",
-    "eslint-plugin-vue": "^9.23.0",
+    "eslint-config-epsvue": "^1.2.1",
     "husky": "^9.1.6",
     "jsdom": "^24.1.0",
     "lint-staged": "^15.2.10",
@@ -55,7 +53,6 @@
     "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",
-    "prettier": "^3.2.5",
     "start-server-and-test": "^2.0.4",
     "tailwindcss": "^3.4.13",
     "typescript": "~5.4.0",
@@ -70,6 +67,9 @@
     ],
     "*.{js,ts,vue}": [
       "eslint"
+    ],
+    "*.{css,vue,scss}": [
+      "stylelint --aei"
     ]
   }
 }
