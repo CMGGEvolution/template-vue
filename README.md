@@ -2,7 +2,7 @@
 
 A complete vue template for a robust project.This includes link to different tools used.
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=bugs)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/IT-WIBRC/4eb7afd82efc633d830c54f4a3d26456/raw/template-vue.json) [![template-vue](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/frc51p/develop&style=plastic&logo=cypress)](https://cloud.cypress.io/projects/frc51p/runs)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=bugs)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=CMGGEvolution_template-vue&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=CMGGEvolution_template-vue) ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/IT-WIBRC/4eb7afd82efc633d830c54f4a3d26456/raw/template-vue.json) [![template-vue](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/frc51p/develop&style=plastic&logo=cypress)](https://cloud.cypress.io/projects/frc51p/runs)
 
 ## Libraries used
 
@@ -19,6 +19,7 @@ A complete vue template for a robust project.This includes link to different too
 - [husky](https://www.npmjs.com/package/husky)
 - [eslint-config-epsvue](https://www.npmjs.com/package/eslint-config-epsvue). It combine [Eslint](https://eslint.org/), [Prettier](https://prettier.io/) and [Stylelint](https://www.npmjs.com/package/stylelint) and it is also customizable 😉
 - [lint-staged](https://www.npmjs.com/package/lint-staged)
+- [commitizen](https://github.com/commitizen/cz-cli): this is a nice utils for commit template 🤙
 
 ## Project structure
 
@@ -99,6 +100,33 @@ Here are the documentation about each workflow:
 - [Generate coverage](.github/workflows/README-GC.md)
 - [Continuous deployment](.github/workflows/README-DEPLOY.md)
 - [Release](.github/workflows/README-RELEASE.md)
+- [commitizen](https://github.com/commitizen/cz-cli)
+
+## Be a commitizen 💆
+
+[Commitizen](https://github.com/commitizen/cz-cli) is a nice utils to setup the commit template for your project. When you commit with Commitizen, you'll be prompted to fill out any required commit fields at commit time. No more waiting until later for a git commit hook to run and reject your commit (though that can still be helpful). No more digging through CONTRIBUTING.md to find what the preferred format is. Get instant feedback on your commit message formatting and be prompted for required fields.
+
+[Husky](https://www.npmjs.com/package/husky) is a tool that allows us to easily wrangle Git hooks and run the scripts we want at those stages.
+
+There are also some alternative to `commitizen` like [commitlint](https://github.com/conventional-changelog/commitlint), etc. It's up to you to choose, remove and customize
+
+## Steps before starting using
+
+1. You can fork this repository
+2. Make this repository a template. You can see how by reading this [Creating a template repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository)
+3. Now you can use this as your template for all your future vue project by referring to this github documentation about [Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+4. Once create, clone this repo on your local machine and install dependencies using `npm ci` command
+5. To make the `husky` file executable, run the following command in your project's root directory:
+
+   ```bash
+   chmod 700 .husky/_/*
+   ```
+
+6. Delete all unnecessary `.md` files on `.github/workflows`'s folder and also the `SERVER_CONFIG.md` in your root project. Don't forget to adapt your `README.md` to your project 🤭
+
+7. To make a commit after a work, you can just type `git commit` in your console and `commitizen` will guide you.
+
+8. Congratulation 🎉🥳. Now you can develop your amazing project.💪🏻
 
 ## Apache server
 
