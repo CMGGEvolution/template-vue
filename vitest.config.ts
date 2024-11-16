@@ -25,7 +25,7 @@ export default defineConfig((configEnv) =>
           thresholds: {
             lines: 90,
             branches: 90,
-            functions: 85,
+            functions: 86,
             statements: 90,
           },
           cleanOnRerun: true,
