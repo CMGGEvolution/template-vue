@@ -11,6 +11,7 @@ A complete vue template for a robust project.This includes link to different too
 - [vue-router](https://router.vuejs.org/)
 - [Pinia store](https://pinia.vuejs.org/)
 - [vue-i18n](https://vue-i18n.intlify.dev/)
+- [vue-test-utils](https://test-utils.vuejs.org/)
 - [TailwindCss](https://tailwindcss.com/)
 - [openapi-typescript-codegen](https://github.com/ferdikoomen/openapi-typescript-codegen)
 - [vitest](https://vitest.dev/)
@@ -170,10 +171,10 @@ This is an advantage for our eyes when importing something from a folder far and
 
   ```javascript
      thresholds: {
-        lines: 0,
-        branches: 0,
-        functions: 0,
-        statements: 0,
+        lines: 84,
+         branches: 84,
+         functions: 84,
+         statements: 84,
      },
   ```
 
@@ -185,6 +186,11 @@ You can read more about it on this [vitest coverage](https://v0.vitest.dev/confi
 ## Apache server
 
 - [Apache server configuration](./SERVER_CONFIG.md)
+
+## Useful packages can helps in your dev journey
+
+- [Dayjs](https://day.js.org/): is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
+- [UUID Generator](https://www.uuidgenerator.net/): this may not be a package, but it is useful when testing.
 
 ## Other
 
