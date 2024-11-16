@@ -1,15 +1,26 @@
 <template>
   <div class="greetings">
-    <h1 class="green">
+    <h1
+      class="green"
+      data-test="greet-title"
+    >
       {{ msg }}:
-      <strong
-        ><mark>{{ t("title") }}</mark></strong
-      >
+      <strong><mark>{{ t("title") }}</mark></strong>
     </h1>
-    <h3>
+    <h3 data-test="congratulation">
       You’ve successfully created a project with <mark>{{ t("hello") }}</mark>
-      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
+      <a
+        href="https://vitejs.dev/"
+        target="_blank"
+        rel="noopener"
+        data-test="vite-dev"
+      >Vite</a> +
+      <a
+        href="https://vuejs.org/"
+        target="_blank"
+        rel="noopener"
+        data-test="vue-doc"
+      >Vue 3</a>.
       What's next?
     </h3>
   </div>

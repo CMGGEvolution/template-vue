@@ -1,10 +1,10 @@
 <template>
   <div class="item">
-    <i>
+    <i data-test="icon">
       <slot name="icon" />
     </i>
     <div class="details">
-      <h3>
+      <h3 data-test="heading">
         <slot name="heading" />
       </h3>
       <slot />
