@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Genrate services
-        run: npm run genrate
+        run: npm run generate
 
       - name: Get Coverage for badge
         run: |
