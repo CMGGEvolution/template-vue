@@ -196,6 +196,11 @@ You can read more about it on this [vitest coverage](https://v0.vitest.dev/confi
 
 I added it to helps me keep track of dependencies update and securities issues related to them.[yaml](.github/dependabot.yml)
 
+## Libraries to consider
+
+- [upFetch](https://github.com/L-Blondy/up-fetch)
+- [Hey API](https://heyapi.dev/openapi-ts) as replacement of `openapi-typescript-codegen`
+
 ## Other
 
 Want a place to find link toward resources in dev, visit this repos [Dev-and-it-resource](https://github.com/masterivanic/Dev-and-it-ressource).

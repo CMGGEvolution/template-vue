@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       pull-requests: write
@@ -27,7 +27,7 @@ jobs:
       - run: node -v
 
       - name: Dependencies vulnerabilities
-        run: npm audit
+        run: npm audit --audit-level=high
 
       - name: Install Dependencies
         run: npm ci
@@ -64,7 +64,7 @@ jobs:
           path: dist
 
   vulnerabilities-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: build
 
     steps:
@@ -105,7 +105,7 @@ jobs:
 
   ui-desktop-tests:
     timeout-minutes: 15
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [build, vulnerabilities-check]
     strategy:
       # don't fail the entire matrix on failure
@@ -152,7 +152,7 @@ jobs:
 
   ui-mobile-tests:
     timeout-minutes: 15
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [build, vulnerabilities-check]
     strategy:
       fail-fast: false
@@ -198,7 +198,7 @@ jobs:
 
   ui-tablet-tests:
     timeout-minutes: 15
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [build, vulnerabilities-check]
     strategy:
       fail-fast: false
@@ -244,7 +244,7 @@ jobs:
 
   ui-laptop-tests:
     timeout-minutes: 15
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [build, vulnerabilities-check]
     strategy:
       fail-fast: false
