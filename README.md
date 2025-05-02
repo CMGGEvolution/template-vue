@@ -192,6 +192,10 @@ You can read more about it on this [vitest coverage](https://v0.vitest.dev/confi
 - [Dayjs](https://day.js.org/): is a minimalist JavaScript library that parses, validates, manipulates, and displays dates and times for modern browsers with a largely Moment.js-compatible API.
 - [UUID Generator](https://www.uuidgenerator.net/): this may not be a package, but it is useful when testing.
 
+## Dependabot
+
+I added it to helps me keep track of dependencies update and securities issues related to them.[yaml](.github/dependabot.yml)
+
 ## Other
 
 Want a place to find link toward resources in dev, visit this repos [Dev-and-it-resource](https://github.com/masterivanic/Dev-and-it-ressource).
