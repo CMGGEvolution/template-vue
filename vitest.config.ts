@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import { configDefaults, defineConfig, mergeConfig } from "vitest/config";
 import viteConfig from "./vite.config";
+import { loadEnv } from "vite";
 
 export default defineConfig((configEnv) =>
   mergeConfig(
@@ -43,6 +44,7 @@ export default defineConfig((configEnv) =>
             "**/*.spec.ts",
           ],
         },
+        env: loadEnv(configEnv.mode, process.cwd(), ""), // mode defines what ".env.{mode}" file to choose if exists
       },
     }),
   ),
