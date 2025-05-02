@@ -18,7 +18,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "pre-commit": "npm audit || lint-staged",
+    "pre-commit": "npm audit --audit-level=high || lint-staged",
     "pre-push": "npm run build && npm run test:unit:ci && npm run remove-build",
     "stylelint": "stylelint --aei '**/*.{css,vue,scss}'",
     "stylelint:fix": "npm run stylelint -- --fix",
