@@ -3,11 +3,9 @@ updates:
   # Keep bundler dependencies up to date
   - package-ecosystem: "npm"
     directory: "/"
-    prefix: "chore"
-    include: "scope"
-    prefix-files:
-        - "package-lock.json"
-        - "package.json"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
     schedule:
       interval: "weekly"
       timezone: "Africa/Douala"
