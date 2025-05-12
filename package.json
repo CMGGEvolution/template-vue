@@ -25,7 +25,8 @@
     "format": "prettier --write src/ && npm run stylelint",
     "husky": "husky",
     "generate-user": "openapi -i ./specs/user.yaml -o ./src/services/apis/user --useOptions -c axios --useUnionTypes",
-    "generate": "npm run generate-user"
+    "generate": "npm run generate-user",
+    "commitlint": "commitlint --edit"
   },
   "dependencies": {
     "pinia": "^2.1.7",
@@ -34,6 +35,8 @@
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@pinia/testing": "^0.1.6",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
@@ -64,15 +67,14 @@
     "vue-tsc": "^2.0.21"
   },
   "lint-staged": {
-    "*.{json,ts,vue}": [
-      "prettier --write"
-    ],
-    "*.{js,ts,vue}": [
+    "*.{json,ts,vue,tsx,jsx}": [
+      "prettier --write",
       "eslint"
     ],
     "*.{css,vue,scss}": [
       "stylelint --aei"
-    ]
+    ],
+    "**/*.{html,json,css,scss,md,mdx}": ["prettier -w"]
   },
   "config": {
     "commitizen": {

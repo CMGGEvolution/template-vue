@@ -21,6 +21,7 @@ A complete vue template for a robust project.This includes link to different too
 - [eslint-config-epsvue](https://www.npmjs.com/package/eslint-config-epsvue). It combine [Eslint](https://eslint.org/), [Prettier](https://prettier.io/) and [Stylelint](https://www.npmjs.com/package/stylelint) and it is also customizable 😉
 - [lint-staged](https://www.npmjs.com/package/lint-staged)
 - [commitizen](https://github.com/commitizen/cz-cli): this is a nice utils for commit template 🤙
+- [commitlint](https://commitlint.js.org/): To helps you or your team adhere to a commit convention
 - [vuelidate](https://vuelidate-next.netlify.app/): Vuelidate is a simple, but powerful, lightweight model-based validation for Vue.js 3 and 2.
 
 ## Project structure
@@ -110,7 +111,7 @@ Here are the documentation about each workflow:
 
 [Husky](https://www.npmjs.com/package/husky) is a tool that allows us to easily wrangle Git hooks and run the scripts we want at those stages.
 
-There are also some alternative to `commitizen` like [commitlint](https://github.com/conventional-changelog/commitlint), etc. It's up to you to choose, remove and customize
+There are also a complementary to `commitizen` like [commitlint](https://github.com/conventional-changelog/commitlint), etc. It's up to you to choose, remove and customize
 
 ## Steps before starting using
 
@@ -206,3 +207,7 @@ I added it to helps me keep track of dependencies update and securities issues r
 Want a place to find link toward resources in dev, visit this repos [Dev-and-it-resource](https://github.com/masterivanic/Dev-and-it-ressource).
 
 Please if this has helped you a bit, add a start. If not, please give me a feed back on [this discussion](https://github.com/CMGGEvolution/template-vue/discussions/16)
+
+## Articles
+
+ - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
